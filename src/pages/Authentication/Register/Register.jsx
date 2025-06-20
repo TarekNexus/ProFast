@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import { Link } from "react-router";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Register = () => {
   const {
@@ -22,6 +23,11 @@ const Register = () => {
         console.log(error);
       });
   };
+
+
+
+
+  
 
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
@@ -72,6 +78,7 @@ const Register = () => {
             </small>
           </p>
         </form>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );
