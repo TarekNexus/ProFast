@@ -5,6 +5,11 @@ import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Register/Register";
 import Coverage from "../pages/Coverage/Coverage";
+import PrivateRoute from "../routes/PrivateRoute";
+import SendPercel from "../pages/SendPercel/SendPercel";
+import DashboardLayout from "../layouts/DashboardLayout";
+import MyParcels from "../pages/Dashboard/MyParcels";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -15,9 +20,18 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: 'coverage',
+        path: "coverage",
         Component: Coverage,
-        loader:()=>fetch('./warehouses.json')
+        loader: () => fetch("./warehouses.json"),
+      },
+      {
+        path: "sendParcel",
+        element: (
+          <PrivateRoute>
+            <SendPercel></SendPercel>
+          </PrivateRoute>
+        ),
+        loader: () => fetch("./warehouses.json"),
       },
     ],
   },
@@ -31,8 +45,22 @@ export const router = createBrowserRouter([
       },
       {
         path: "register",
-        Component: Register
+        Component: Register,
       },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path:'myParcels',
+        Component:MyParcels
+      }
     ],
   },
 ]);

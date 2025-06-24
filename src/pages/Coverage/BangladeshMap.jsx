@@ -38,7 +38,7 @@ const BangladeshMap = ({ serviceCenters }) => {
       // setSearchText('');
     } else {
       alert('District not found!');
-    }
+    }  
   };
 
   return (
