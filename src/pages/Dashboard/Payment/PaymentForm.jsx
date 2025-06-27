@@ -6,6 +6,7 @@ import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
+
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -79,7 +80,8 @@ const PaymentForm = () => {
         setError("");
         if (result.paymentIntent.status === "succeeded") {
           console.log("Payment succeeded!");
-          const transactionId = result.paymentIntent.id;
+         console.log(result);
+           const transactionId = result.paymentIntent.id;
           // step-4 mark parcel paid also create payment history
           const paymentData = {
             parcelId,
