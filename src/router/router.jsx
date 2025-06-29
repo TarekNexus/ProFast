@@ -12,6 +12,9 @@ import MyParcels from "../pages/Dashboard/MyParcels";
 import Payment from "../pages/Dashboard/Payment/Payment";
 import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 import TrackParcel from "../pages/Dashboard/TrackParcel/TrackParcel";
+import BeARider from "../pages/Dashboard/BeARider/BeARider";
+import PendingRiders from "../pages/Dashboard/PendingRiders/PendingRiders";
+import ActiveRiders from "../pages/Dashboard/ActiveRiders/ActiveRiders";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +30,16 @@ export const router = createBrowserRouter([
         Component: Coverage,
         loader: () => fetch("./warehouses.json"),
       },
+      {
+        path:"BeARider",
+        element:<PrivateRoute>
+          <BeARider></BeARider>
+        </PrivateRoute>,
+        loader: () => fetch("./warehouses.json")
+
+      }
+      ,
+
       {
         path: "sendParcel",
         element: (
@@ -77,6 +90,14 @@ export const router = createBrowserRouter([
         path: 'track',
         Component: TrackParcel
       },
+      {
+        path: 'pending-riders',
+        Component: PendingRiders
+      },
+      {
+        path: 'active-riders',
+        Component: ActiveRiders
+      }
      
     ],
   },

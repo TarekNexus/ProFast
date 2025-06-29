@@ -39,6 +39,9 @@ const handleLogOut=()=>{
 
 
       <li>
+        <NavLink to="/BeARider">Be A Rider</NavLink>
+      </li>
+      <li>
         <NavLink to="/about">About Us</NavLink>
       </li>
     </>
