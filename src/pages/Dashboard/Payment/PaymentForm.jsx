@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useTrackingLogger from "../../../Hooks/useTrackingLogger";
 import Swal from "sweetalert2";
-
 
 const PaymentForm = () => {
   const stripe = useStripe();
@@ -13,6 +13,7 @@ const PaymentForm = () => {
   const { parcelId } = useParams();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const { logTracking } = useTrackingLogger();
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
@@ -36,19 +37,22 @@ const PaymentForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!stripe || !elements) {
       return;
     }
 
     const card = elements.getElement(CardElement);
+
     if (!card) {
       return;
     }
+
+    // step- 1: validate the card
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
+
     if (error) {
       setError(error.message);
     } else {
@@ -80,8 +84,7 @@ const PaymentForm = () => {
         setError("");
         if (result.paymentIntent.status === "succeeded") {
           console.log("Payment succeeded!");
-         console.log(result);
-           const transactionId = result.paymentIntent.id;
+          const transactionId = result.paymentIntent.id;
           // step-4 mark parcel paid also create payment history
           const paymentData = {
             parcelId,
@@ -101,6 +104,12 @@ const PaymentForm = () => {
               confirmButtonText: "Go to My Parcels",
             });
 
+            await logTracking({
+              tracking_id: parcelInfo.tracking_id,
+              status: "payment_done",
+              details: `Paid by ${user.displayName}`,
+              updated_by: user.email,
+            });
             // ✅ Redirect to /myParcels
             navigate("/dashboard/myParcels");
           }
